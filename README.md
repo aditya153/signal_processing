@@ -68,7 +68,7 @@ Plot the channel amplitude and phase response side-by-side and save as:
 ```
 
 ## **Submission**
-When you are finished, invite me (**till.ruppert@dfki.de**) to your private fork, so I can review your work.<br>
+When you are finished, invite me (**username: till**) to your private fork so I can review your work.<br>
 If you dont have anough time or you can only complete part of the tasks, feel free to submit your partial solution, there is still a good chance to be invited to an interview.<br>
 After the application deadline, submissions will be reviewed and a notification will be sent in the following weeks.<br>
 Have fun :smirk:!
