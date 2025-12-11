@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package stream;
+
+message Waveform {
+    string name = 1;           // "tx" or "rx"
+    bytes iq_samples = 2;      // raw IQ buffer (int16 interleaved)
+    uint64 timestamp = 3;      // UTC timestamp
+}

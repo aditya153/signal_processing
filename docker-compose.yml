@@ -1,0 +1,21 @@
+services:
+
+  server:
+    environment:
+      - PYTHONUNBUFFERED=1
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    volumes:
+      - /tmp:/tmp
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    depends_on:
+      - server  
+    volumes:
+      - ./client/results:/client/results
+      - /tmp:/tmp
+    environment:
+      - PYTHONUNBUFFERED=1
