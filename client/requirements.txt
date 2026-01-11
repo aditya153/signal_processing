@@ -1,0 +1,6 @@
+pyzmq
+protobuf
+numpy
+matplotlib
+scipy
+py3gpp
