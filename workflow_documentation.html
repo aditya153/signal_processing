@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Processing Workflow Documentation</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #0ea5e9;
+            --accent: #10b981;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-code: #0d1117;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a5f 100%);
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .tech-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .badge {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #e0e7ff;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Section Styles */
+        section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--bg-code);
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            margin: 15px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: #161b22;
+            border-radius: 12px 12px 0 0;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .code-header+.code-block {
+            border-radius: 0 0 12px 12px;
+            margin-top: 0;
+        }
+
+        /* Syntax Highlighting */
+        .keyword {
+            color: #ff79c6;
+        }
+
+        .string {
+            color: #f1fa8c;
+        }
+
+        .function {
+            color: #8be9fd;
+        }
+
+        .comment {
+            color: #6272a4;
+        }
+
+        .number {
+            color: #bd93f9;
+        }
+
+        .variable {
+            color: #50fa7b;
+        }
+
+        /* Flow Diagram */
+        .flow-diagram {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            border: 1px solid var(--border);
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .flow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 25px;
+            top: 55px;
+            width: 2px;
+            height: calc(100% + 5px);
+            background: linear-gradient(to bottom, var(--primary), transparent);
+        }
+
+        .flow-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-right: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .flow-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .flow-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .flow-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Architecture Grid */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .arch-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .arch-card-header {
+            padding: 20px 25px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .arch-card-body {
+            padding: 20px 25px;
+        }
+
+        .arch-card-body ul {
+            list-style: none;
+        }
+
+        .arch-card-body li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .arch-card-body li:last-child {
+            border-bottom: none;
+        }
+
+        .arch-card-body li::before {
+            content: '→';
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Task Cards */
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .task-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .task-header {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .task-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin: 0 auto 15px;
+            color: white;
+        }
+
+        .task-header h4 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+        }
+
+        .task-body {
+            padding: 0 25px 25px;
+        }
+
+        .task-body p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .task-output {
+            background: var(--bg-code);
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+
+        /* Data Flow Visualization */
+        .data-flow {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .data-flow h3 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+
+        .flow-boxes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .flow-box {
+            padding: 20px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+        }
+
+        th,
+        td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: rgba(99, 102, 241, 0.2);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .flow-step {
+                flex-direction: column;
+            }
+
+            .flow-step::after {
+                display: none;
+            }
+
+            .flow-number {
+                margin-bottom: 15px;
+            }
+
+            .flow-boxes {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <h1>📡 Signal Processing Workflow</h1>
+        <p class="subtitle">Complete end-to-end documentation of the 5G NR signal processing pipeline using ZMQ,
+            Protobuf, and OFDM demodulation</p>
+        <div class="tech-badges">
+            <span class="badge">🐍 Python</span>
+            <span class="badge">📦 Protobuf</span>
+            <span class="badge">⚡ ZeroMQ</span>
+            <span class="badge">🐳 Docker</span>
+            <span class="badge">📊 NumPy/SciPy</span>
+            <span class="badge">📶 5G NR</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- System Architecture -->
+        <section id="architecture">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-1);">🏗️</div>
+                <h2>System Architecture</h2>
+            </div>
+
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <div class="arch-card-header"
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        🖥️ Server Component
+                    </div>
+                    <div class="arch-card-body">
+                        <ul>
+                            <li>Loads raw IQ waveform files (TX and RX)</li>
+                            <li>Serializes data using Protocol Buffers</li>
+                            <li>Broadcasts via ZMQ PUSH socket</li>
+                            <li>Runs in Docker container</li>
+                            <li>Uses IPC for inter-process communication</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header"
+                        style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        💻 Client Component
+                    </div>
+                    <div class="arch-card-body">
+                        <ul>
+                            <li>Receives Protobuf messages via ZMQ PULL</li>
+                            <li>Converts IQ bytes to complex signals</li>
+                            <li>Performs signal synchronization</li>
+                            <li>Executes OFDM demodulation</li>
+                            <li>Estimates wireless channel response</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Architecture Diagram -->
+            <div class="card" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+                <pre style="color: var(--text-secondary); font-family: monospace; line-height: 1.5; overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                          Docker Compose Environment                              │
+├──────────────────────────────────┬──────────────────────────────────────────────┤
+│           <span style="color: #8be9fd;">SERVER</span>                  │              <span style="color: #ff79c6;">CLIENT</span>                          │
+│  ┌─────────────────────────┐     │     ┌─────────────────────────────────────┐  │
+│  │ <span style="color: #50fa7b;">txWaveform.dat</span>          │     │     │     <span style="color: #50fa7b;">signal_processing.py</span>            │  │
+│  │ <span style="color: #50fa7b;">rxWaveform.dat</span>          │     │     │  ┌──────────────────────────────┐   │  │
+│  │        ↓                │     │     │  │  <span style="color: #f1fa8c;">Task 1</span>: Time Domain Plot    │   │  │
+│  │  <span style="color: #bd93f9;">server.py</span>              │═══════════════→│  <span style="color: #f1fa8c;">Task 2</span>: Synchronization      │   │  │
+│  │  (ZMQ PUSH)             │  Protobuf   │  <span style="color: #f1fa8c;">Task 3</span>: OFDM Demodulation    │   │  │
+│  │        ↓                │   over      │  <span style="color: #f1fa8c;">Task 4</span>: Channel Estimation   │   │  │
+│  │  <span style="color: #8be9fd;">waveform.proto</span>         │   IPC       │  └──────────────────────────────┘   │  │
+│  └─────────────────────────┘     │     │              ↓                       │  │
+│                                  │     │      <span style="color: #50fa7b;">results/*.png</span>                   │  │
+│                                  │     └─────────────────────────────────────┘  │
+└──────────────────────────────────┴──────────────────────────────────────────────┘
+                </pre>
+            </div>
+        </section>
+
+        <!-- Data Flow Section -->
+        <section id="data-flow">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-2);">🔄</div>
+                <h2>Complete Data Flow</h2>
+            </div>
+
+            <div class="flow-diagram">
+                <!-- Step 1 -->
+                <div class="flow-step">
+                    <div class="flow-number" style="background: var(--gradient-1);">1</div>
+                    <div class="flow-content">
+                        <h4>📁 Raw Waveform Files</h4>
+                        <p>Server loads pre-recorded IQ samples from binary files:</p>
+                        <ul style="color: var(--text-secondary); margin-top: 10px;">
+                            <li><strong>txWaveform.dat</strong> (123,008 bytes) - Transmitted 5G NR signal</li>
+                            <li><strong>rxWaveform.dat</strong> (123,008 bytes) - Received signal with channel effects
+                            </li>
+                            <li>Format: int16 interleaved IQ (I₁, Q₁, I₂, Q₂, ...)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flow-step">
+                    <div class="flow-number" style="background: var(--gradient-2);">2</div>
+                    <div class="flow-content">
+                        <h4>📦 Protocol Buffer Serialization</h4>
+                        <p>Data is packaged into structured messages using Protobuf:</p>
+                        <div class="code-block">
+                            <pre><span class="keyword">message</span> <span class="function">Waveform</span> {
+    <span class="keyword">string</span> name = <span class="number">1</span>;         <span class="comment">// "tx" or "rx"</span>
+    <span class="keyword">bytes</span> iq_samples = <span class="number">2</span>;    <span class="comment">// raw IQ buffer</span>
+    <span class="keyword">uint64</span> timestamp = <span class="number">3</span>;    <span class="comment">// UTC timestamp</span>
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flow-step">
+                    <div class="flow-number" style="background: var(--gradient-3);">3</div>
+                    <div class="flow-content">
+                        <h4>⚡ ZeroMQ Message Transport</h4>
+                        <p>Messages are transmitted via ZMQ using the PUSH/PULL pattern:</p>
+                        <div class="code-block">
+                            <pre><span class="comment"># Server (PUSH)</span>
+serv_sock = context.socket(zmq.<span class="variable">PUSH</span>)
+serv_sock.bind(<span class="string">"ipc:///tmp/comsock"</span>)
+serv_sock.send(msg.SerializeToString())
+
+<span class="comment"># Client (PULL)</span>
+socket = context.socket(zmq.<span class="variable">PULL</span>)
+socket.connect(<span class="string">"ipc:///tmp/comsock"</span>)
+message = socket.recv()</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="flow-step">
+                    <div class="flow-number" style="background: var(--gradient-4);">4</div>
+                    <div class="flow-content">
+                        <h4>🔢 IQ to Complex Conversion</h4>
+                        <p>Raw bytes are converted to complex-valued signal arrays:</p>
+                        <div class="code-block">
+                            <pre><span class="keyword">def</span> <span class="function">iq_to_complex</span>(iq_bytes):
+    <span class="comment"># Interpret bytes as int16 array</span>
+    iq = np.frombuffer(iq_bytes, dtype=np.<span class="variable">int16</span>)
+    
+    <span class="comment"># Even indices = I, Odd indices = Q</span>
+    <span class="comment"># Combine into complex: I + jQ</span>
+    <span class="keyword">return</span> iq[<span class="number">0</span>::<span class="number">2</span>] + <span class="number">1j</span> * iq[<span class="number">1</span>::<span class="number">2</span>]</pre>
+                        </div>
+                        <p style="margin-top: 15px;"><strong>Result:</strong> 123,008 bytes → 30,752 complex samples</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="flow-step">
+                    <div class="flow-number" style="background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);">5
+                    </div>
+                    <div class="flow-content">
+                        <h4>⚙️ Signal Processing Pipeline</h4>
+                        <p>Four processing tasks are executed sequentially on the received signals:</p>
+                        <ol style="color: var(--text-secondary); margin-top: 10px; padding-left: 20px;">
+                            <li>Time-domain visualization of TX and RX signals</li>
+                            <li>Cross-correlation based synchronization</li>
+                            <li>OFDM demodulation to frequency domain</li>
+                            <li>Channel estimation (H = RX/TX)</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Four Tasks -->
+        <section id="tasks">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-3);">📊</div>
+                <h2>Signal Processing Tasks</h2>
+            </div>
+
+            <div class="task-grid">
+                <!-- Task 1 -->
+                <div class="task-card">
+                    <div class="task-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="task-number" style="background: rgba(0,0,0,0.3);">1</div>
+                        <h4>Time Domain Visualization</h4>
+                    </div>
+                    <div class="task-body">
+                        <p>Plot the transmitted (TX) and received (RX) signals side by side in the time domain.</p>
+                        <p><strong>Purpose:</strong> Visualize raw signal characteristics and compare TX vs RX amplitude
+                            variations.</p>
+                        <div class="task-output">📄 results/task1.png</div>
+                    </div>
+                </div>
+
+                <!-- Task 2 -->
+                <div class="task-card">
+                    <div class="task-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <div class="task-number" style="background: rgba(0,0,0,0.3);">2</div>
+                        <h4>Signal Synchronization</h4>
+                    </div>
+                    <div class="task-body">
+                        <p>Use <strong>cross-correlation</strong> to find the time delay between TX and RX, then align
+                            the signals.</p>
+                        <p><strong>Method:</strong> Peak of correlation indicates optimal alignment point.</p>
+                        <div class="task-output">📄 results/task2.png</div>
+                    </div>
+                </div>
+
+                <!-- Task 3 -->
+                <div class="task-card">
+                    <div class="task-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <div class="task-number" style="background: rgba(0,0,0,0.3);">3</div>
+                        <h4>OFDM Demodulation</h4>
+                    </div>
+                    <div class="task-body">
+                        <p>Convert time-domain signals to frequency-domain <strong>resource grids</strong> using 5G NR
+                            parameters.</p>
+                        <p><strong>Config:</strong> 275 RBs, 30kHz SCS, Normal CP</p>
+                        <div class="task-output">📄 results/task3.png</div>
+                    </div>
+                </div>
+
+                <!-- Task 4 -->
+                <div class="task-card">
+                    <div class="task-header" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                        <div class="task-number" style="background: rgba(0,0,0,0.3);">4</div>
+                        <h4>Channel Estimation</h4>
+                    </div>
+                    <div class="task-body">
+                        <p>Estimate the wireless channel response by dividing RX by TX in the frequency domain.</p>
+                        <p><strong>Output:</strong> Amplitude and phase response per subcarrier.</p>
+                        <div class="task-output">📄 results/task4.png</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Task Explanations -->
+        <section id="task-details">
+            <div class="section-header">
+                <div class="section-icon" style="background: var(--gradient-4);">🔬</div>
+                <h2>Detailed Task Breakdown</h2>
+            </div>
+
+            <!-- Task 2: Synchronization -->
+            <div class="card">
+                <h3>🔄 Task 2: Signal Synchronization</h3>
+                <p>In wireless systems, the received signal arrives with a propagation delay. Synchronization aligns TX
+                    and RX before comparison.</p>
+
+                <div class="code-header">
+                    <span>📄 synchronize_signals()</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">def</span> <span class="function">synchronize_signals</span>(tx, rx):
+    <span class="comment"># Cross-correlation finds similarity at different time shifts</span>
+    corr = sig.correlate(rx, tx, mode=<span class="string">'full'</span>)
+    
+    <span class="comment"># Peak location indicates the delay</span>
+    delay = np.argmax(np.abs(corr)) - len(tx) + <span class="number">1</span>
+    
+    <span class="comment"># Trim signals to align them</span>
+    <span class="keyword">if</span> delay > <span class="number">0</span>:
+        <span class="keyword">return</span> tx[:-delay], rx[delay:], delay
+    <span class="keyword">elif</span> delay < <span class="number">0</span>:
+        <span class="keyword">return</span> tx[-delay:], rx[:delay], delay
+    <span class="keyword">return</span> tx, rx, delay</pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💡 How Cross-Correlation Works</h4>
+                    <p>Cross-correlation slides one signal over another and measures similarity at each position. The
+                        position with the highest correlation indicates the time offset between the signals.</p>
+                </div>
+            </div>
+
+            <!-- Task 3: OFDM -->
+            <div class="card">
+                <h3>📊 Task 3: OFDM Demodulation</h3>
+                <p>OFDM (Orthogonal Frequency Division Multiplexing) is the core modulation scheme in 5G NR. It converts
+                    time-domain samples to a frequency-domain resource grid.</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Value</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>NSizeGrid</td>
+                                <td>275</td>
+                                <td>Number of Resource Blocks (275 × 12 = 3300 subcarriers)</td>
+                            </tr>
+                            <tr>
+                                <td>SubcarrierSpacing</td>
+                                <td>30 kHz</td>
+                                <td>5G NR standard for FR1 (sub-6 GHz)</td>
+                            </tr>
+                            <tr>
+                                <td>SymbolsPerSlot</td>
+                                <td>14</td>
+                                <td>OFDM symbols in one slot</td>
+                            </tr>
+                            <tr>
+                                <td>CyclicPrefix</td>
+                                <td>Normal</td>
+                                <td>Guard interval to prevent inter-symbol interference</td>
+                            </tr>
+                            <tr>
+                                <td>Sample Rate</td>
+                                <td>122.88 MHz</td>
+                                <td>5G NR standard sampling frequency</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="code-header">
+                    <span>📄 ofdm_demodulate()</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">def</span> <span class="function">ofdm_demodulate</span>(signal, fs):
+    <span class="keyword">class</span> <span class="function">carrier</span>:
+        NCellID = <span class="number">1</span>
+        NSizeGrid = <span class="number">275</span>              <span class="comment"># Resource Blocks</span>
+        SubcarrierSpacing = <span class="number">30</span>       <span class="comment"># kHz</span>
+        SymbolsPerSlot = <span class="number">14</span>
+        CyclicPrefix = <span class="string">'normal'</span>
+    
+    <span class="comment"># Uses py3gpp library for 3GPP-compliant demodulation</span>
+    <span class="keyword">return</span> nrOFDMDemodulate(carrier(), signal, fs)</pre>
+                </div>
+            </div>
+
+            <!-- Task 4: Channel Estimation -->
+            <div class="card">
+                <h3>📡 Task 4: Channel Estimation</h3>
+                <p>The wireless channel affects each frequency differently. Channel estimation reveals how the channel
+                    modifies the signal.</p>
+
+                <div class="code-header">
+                    <span>📄 estimate_channel()</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">def</span> <span class="function">estimate_channel</span>(tx_grid, rx_grid):
+    epsilon = <span class="number">1e-10</span>  <span class="comment"># Prevent division by zero</span>
+    
+    <span class="comment"># Channel = Received / Transmitted (in frequency domain)</span>
+    H = rx_grid / (tx_grid + epsilon)
+    
+    <span class="comment"># Mask out weak TX subcarriers (noise-dominated)</span>
+    mask = np.abs(tx_grid) > <span class="number">0.01</span> * np.max(np.abs(tx_grid))
+    H = np.where(mask, H, <span class="number">0</span>)
+    
+    <span class="comment"># Average across OFDM symbols</span>
+    H_avg = np.mean(H, axis=<span class="number">1</span>)
+    
+    <span class="comment"># Return magnitude and phase</span>
+    <span class="keyword">return</span> np.abs(H_avg), np.angle(H_avg)</pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💡 Channel Response Interpretation</h4>
+                    <p><strong>Amplitude Response:</strong> Shows how much each frequency is attenuated by the channel.
+                        Dips indicate frequencies where the signal is weakened (fading).<br><br>
+                        <strong>Phase Response:</strong> Shows the phase shift at each frequency. Linear phase indicates
+                        distance-proportional delay; non-linear phase indicates frequency-dependent dispersion.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Detailed Line-by-Line: estimate_channel -->
+            <div class="card" style="border-left: 4px solid #43e97b;">
+                <h3>📖 Deep Dive: estimate_channel() - Line-by-Line Breakdown</h3>
+                <p>This section provides a comprehensive step-by-step explanation of every line in the channel
+                    estimation function.</p>
+
+                <div class="code-header">
+                    <span>📄 Complete estimate_channel() function</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">def</span> <span class="function">estimate_channel</span>(tx_grid, rx_grid):
+    epsilon = <span class="number">1e-10</span>
+    H = rx_grid / (tx_grid + epsilon)
+    mask = np.abs(tx_grid) > <span class="number">0.01</span> * np.max(np.abs(tx_grid))
+    H = np.where(mask, H, <span class="number">0</span>)  
+    H_avg = np.mean(H, axis=<span class="number">1</span>)
+    <span class="keyword">return</span> np.abs(H_avg), np.angle(H_avg)</pre>
+                </div>
+
+                <!-- Line 1 -->
+                <div style="background: rgba(67, 233, 123, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: #43e97b;">🔹 Line 1: Function Definition</h4>
+                    <div class="code-block" style="margin: 10px 0;">
+                        <pre><span class="keyword">def</span> <span class="function">estimate_channel</span>(tx_grid, rx_grid):</pre>
+                    </div>
+                    <p><strong>What it does:</strong> Defines the function that takes two parameters:</p>
+                    <ul style="color: var(--text-secondary); margin-left: 20px;">
+                        <li><code>tx_grid</code>: The <strong>transmitted signal</strong> in frequency domain (2D NumPy
+                            array)</li>
+                        <li><code>rx_grid</code>: The <strong>received signal</strong> in frequency domain (2D NumPy
+                            array)</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Array Shape:</strong> Both arrays have shape
+                        <code>(subcarriers × OFDM_symbols)</code> = <code>(3300 × 14)</code> for our 5G NR configuration
+                    </p>
+                </div>
+
+                <!-- Line 2 -->
+                <div style="background: rgba(99, 102, 241, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: #818cf8;">🔹 Line 2: Epsilon for Numerical Stability</h4>
+                    <div class="code-block" style="margin: 10px 0;">
+                        <pre>epsilon = <span class="number">1e-10</span></pre>
+                    </div>
+                    <p><strong>What it does:</strong> Creates a tiny value (0.0000000001) to prevent <strong>division by
+                            zero</strong></p>
+                    <p><strong>Why needed:</strong></p>
+                    <ul style="color: var(--text-secondary); margin-left: 20px;">
+                        <li>When we divide RX by TX, if TX has any zero values, it causes a math error (infinity/NaN)
+                        </li>
+                        <li>Adding this small epsilon to the denominator ensures we never divide by exactly zero</li>
+                        <li>1e-10 is small enough to not affect the result but large enough to prevent numerical issues
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Line 3 -->
+                <div style="background: rgba(248, 113, 113, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: #f87171;">🔹 Line 3: Channel Estimation Formula</h4>
+                    <div class="code-block" style="margin: 10px 0;">
+                        <pre>H = rx_grid / (tx_grid + epsilon)</pre>
+                    </div>
+                    <p><strong>What it does:</strong> Calculates the wireless channel response H</p>
+                    <div class="highlight-box" style="margin: 15px 0;">
+                        <h4>🔬 The Mathematics</h4>
+                        <p>In the frequency domain, the wireless channel relationship is:</p>
+                        <p style="text-align: center; font-size: 1.2rem; color: var(--text-primary); margin: 10px 0;">
+                            <strong>RX = TX × H</strong> (element-wise multiplication)
+                        </p>
+                        <p>Rearranging to solve for H:</p>
+                        <p style="text-align: center; font-size: 1.2rem; color: var(--text-primary); margin: 10px 0;">
+                            <strong>H = RX / TX</strong>
+                        </p>
+                    </div>
+                    <p><strong>Result:</strong> H is a 2D complex array (same shape as inputs) where each element
+                        represents how the channel affected that specific subcarrier at that OFDM symbol time</p>
+                </div>
+
+                <!-- Line 4 -->
+                <div style="background: rgba(251, 191, 36, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: #fbbf24;">🔹 Line 4: Creating the Validity Mask</h4>
+                    <div class="code-block" style="margin: 10px 0;">
+                        <pre>mask = np.abs(tx_grid) > <span class="number">0.01</span> * np.max(np.abs(tx_grid))</pre>
+                    </div>
+                    <p><strong>What it does:</strong> Creates a <strong>boolean mask</strong> to identify "valid"
+                        subcarriers</p>
+                    <p><strong>Step-by-step breakdown:</strong></p>
+                    <ol style="color: var(--text-secondary); margin-left: 20px;">
+                        <li><code>np.abs(tx_grid)</code> → Takes absolute value (magnitude) of all TX values</li>
+                        <li><code>np.max(...)</code> → Finds the maximum magnitude across all subcarriers</li>
+                        <li><code>0.01 * ...</code> → Calculates 1% of that maximum (the threshold)</li>
+                        <li><code>np.abs(tx_grid) > threshold</code> → Returns True where TX is significant</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>Why 1% threshold?</strong></p>
+                    <ul style="color: var(--text-secondary); margin-left: 20px;">
+                        <li>Subcarriers with very low TX power are noise-dominated</li>
+                        <li>Dividing RX by tiny TX values amplifies noise dramatically</li>
+                        <li>Only subcarriers with >1% of max power give reliable estimates</li>
+                        <li>This filters out guard band subcarriers and unused resource elements</li>
+                    </ul>
+                </div>
+
+                <!-- Line 5 -->
+                <div style="background: rgba(14, 165, 233, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: #0ea5e9;">🔹 Line 5: Applying the Mask</h4>
+                    <div class="code-block" style="margin: 10px 0;">
+                        <pre>H = np.where(mask, H, <span class="number">0</span>)</pre>
+                    </div>
+                    <p><strong>What it does:</strong> Filters out unreliable channel estimates</p>
+                    <p><strong>How np.where() works:</strong></p>
+                    <ul style="color: var(--text-secondary); margin-left: 20px;">
+                        <li>For each element: if <code>mask[i,j]</code> is True → keep <code>H[i,j]</code></li>
+                        <li>For each element: if <code>mask[i,j]</code> is False → replace with 0</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Result:</strong> All noise-dominated subcarriers are set to
+                        zero, leaving only reliable channel estimates</p>
+                </div>
+
+                <!-- Line 6 -->
+                <div style="background: rgba(168, 85, 247, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: #a855f7;">🔹 Line 6: Averaging Across Time</h4>
+                    <div class="code-block" style="margin: 10px 0;">
+                        <pre>H_avg = np.mean(H, axis=<span class="number">1</span>)</pre>
+                    </div>
+                    <p><strong>What it does:</strong> Averages the channel estimates across OFDM symbols (time)</p>
+                    <p><strong>Understanding axis=1:</strong></p>
+                    <ul style="color: var(--text-secondary); margin-left: 20px;">
+                        <li>H has shape: <code>(3300 subcarriers, 14 OFDM symbols)</code></li>
+                        <li><code>axis=1</code> means average along the second dimension (symbols)</li>
+                        <li>Result: <code>H_avg</code> has shape <code>(3300,)</code> - one value per subcarrier</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>Why average?</strong></p>
+                    <ul style="color: var(--text-secondary); margin-left: 20px;">
+                        <li>Each OFDM symbol gives one estimate of the channel</li>
+                        <li>Averaging 14 estimates reduces noise (√14 ≈ 3.7× noise reduction)</li>
+                        <li>Assumes channel is relatively stable during one slot (0.5 ms)</li>
+                    </ul>
+                </div>
+
+                <!-- Line 7 -->
+                <div style="background: rgba(16, 185, 129, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: #10b981;">🔹 Line 7: Return Amplitude and Phase</h4>
+                    <div class="code-block" style="margin: 10px 0;">
+                        <pre><span class="keyword">return</span> np.abs(H_avg), np.angle(H_avg)</pre>
+                    </div>
+                    <p><strong>What it does:</strong> Extracts and returns two components of the complex channel:</p>
+
+                    <div class="table-container" style="margin: 15px 0;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Return Value</th>
+                                    <th>Function</th>
+                                    <th>Physical Meaning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>np.abs(H_avg)</code></td>
+                                    <td>Magnitude/Amplitude</td>
+                                    <td>How much each frequency is <strong>attenuated</strong> by the channel</td>
+                                </tr>
+                                <tr>
+                                    <td><code>np.angle(H_avg)</code></td>
+                                    <td>Phase (in radians)</td>
+                                    <td>How much each frequency is <strong>phase-shifted</strong> by the channel</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Visual Flow Diagram -->
+                <div
+                    style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 25px; margin: 20px 0;">
+                    <h4 style="color: var(--text-primary); margin-bottom: 15px;">📊 Visual Algorithm Flow</h4>
+                    <pre
+                        style="color: var(--text-secondary); font-family: monospace; line-height: 1.8; overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────────┐
+│                        INPUT                                     │
+│  tx_grid (3300×14)              rx_grid (3300×14)               │
+│  ┌─────────────────┐            ┌─────────────────┐             │
+│  │ TX subcarriers  │            │ RX subcarriers  │             │
+│  │ across symbols  │            │ across symbols  │             │
+│  └────────┬────────┘            └────────┬────────┘             │
+│           │                              │                       │
+│           └──────────────┬───────────────┘                       │
+│                          ▼                                       │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │ <span style="color: #f87171;">STEP 1: H = RX / (TX + ε)</span>                                  │  │
+│  │ Calculate raw channel estimate for each element            │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                          ▼                                       │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │ <span style="color: #fbbf24;">STEP 2: mask = |TX| > 0.01 × max(|TX|)</span>                     │  │
+│  │ Identify subcarriers with significant TX power             │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                          ▼                                       │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │ <span style="color: #0ea5e9;">STEP 3: H = where(mask, H, 0)</span>                               │  │
+│  │ Zero out unreliable estimates                              │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                          ▼                                       │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │ <span style="color: #a855f7;">STEP 4: H_avg = mean(H, axis=1)</span>                             │  │
+│  │ Average across 14 OFDM symbols → (3300,) array             │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                          ▼                                       │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │ <span style="color: #10b981;">STEP 5: return |H_avg|, ∠H_avg</span>                              │  │
+│  │ Extract amplitude and phase from complex channel           │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                          ▼                                       │
+│                       OUTPUT                                     │
+│  amplitude (3300,)              phase (3300,)                   │
+│  ┌─────────────────┐            ┌─────────────────┐             │
+│  │ 0.8, 0.7, 0.9.. │            │ 0.1, -0.3, 0.2..│             │
+│  │ (attenuation)   │            │ (radians)       │             │
+│  └─────────────────┘            └─────────────────┘             │
+└─────────────────────────────────────────────────────────────────┘
+                    </pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💡 Key Takeaways</h4>
+                    <p>
+                        <strong>1. Division-based estimation:</strong> The core idea is simple - divide received by
+                        transmitted to find what the channel did.<br><br>
+                        <strong>2. Noise handling:</strong> The mask filters out garbage estimates from low-power
+                        subcarriers.<br><br>
+                        <strong>3. Temporal averaging:</strong> Averaging across symbols improves estimate
+                        quality.<br><br>
+                        <strong>4. Complex decomposition:</strong> Returning magnitude and phase separately allows for
+                        visualization and further processing.
+                    </p>
+                </div>
+        </section>
+
+        <!-- Alternative Channel Estimation Methods -->
+        <section id="alt-channel-estimation">
+            <div class="section-header">
+                <div class="section-icon" style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);">🔬
+                </div>
+                <h2>Alternative Channel Estimation Methods</h2>
+            </div>
+
+            <div class="card">
+                <h3>🤔 Why Consider Alternatives?</h3>
+                <p>The masking approach we used is simple and effective, but there are many other methods for channel
+                    estimation and noise removal. Each has different trade-offs in terms of complexity, accuracy, and
+                    requirements.</p>
+
+                <div class="highlight-box">
+                    <h4>💡 Key Question</h4>
+                    <p><strong>Can we do channel estimation without masking?</strong> Yes! The mask is just one way to
+                        handle noise. Other methods include smoothing, interpolation, and transform-domain denoising.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Method 1: Simple Division -->
+            <div class="card" style="border-left: 4px solid #6366f1;">
+                <h3>📐 Method 1: Simple Division (No Mask)</h3>
+                <p>The most basic approach - just divide RX by TX without any filtering.</p>
+
+                <div class="code-header">
+                    <span>📄 estimate_channel_simple()</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">def</span> <span class="function">estimate_channel_simple</span>(tx_grid, rx_grid):
+    epsilon = <span class="number">1e-10</span>
+    H = rx_grid / (tx_grid + epsilon)
+    H_avg = np.mean(H, axis=<span class="number">1</span>)
+    <span class="keyword">return</span> np.abs(H_avg), np.angle(H_avg)</pre>
+                </div>
+
+                <div style="background: rgba(99, 102, 241, 0.1); border-radius: 12px; padding: 20px; margin: 15px 0;">
+                    <h4 style="color: #818cf8;">📝 Line-by-Line Explanation</h4>
+                    <table style="width: 100%; margin-top: 10px;">
+                        <tr>
+                            <td style="width: 40%; vertical-align: top; padding: 8px;"><code>epsilon = 1e-10</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Small value to prevent division by
+                                zero errors</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>H = rx_grid / (tx_grid + epsilon)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Direct channel calculation: H =
+                                RX/TX for every element</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>H_avg = np.mean(H, axis=1)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Average across OFDM symbols (time)
+                                to reduce noise</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>return np.abs(H_avg), np.angle(H_avg)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Return amplitude and phase of
+                                channel response</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="table-container" style="margin-top: 15px;">
+                    <table>
+                        <tr>
+                            <th style="width: 50%;">✅ Pros</th>
+                            <th>❌ Cons</th>
+                        </tr>
+                        <tr>
+                            <td>Simplest possible implementation</td>
+                            <td>Noise amplification where TX is weak</td>
+                        </tr>
+                        <tr>
+                            <td>Uses all available data</td>
+                            <td>Poor performance at low SNR</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Method 2: Moving Average Filter -->
+            <div class="card" style="border-left: 4px solid #10b981;">
+                <h3>📊 Method 2: Moving Average Filter (Frequency Smoothing)</h3>
+                <p>Smooth the channel estimate across adjacent subcarriers to reduce noise. Based on the principle that
+                    nearby frequencies have similar channel responses.</p>
+
+                <div class="code-header">
+                    <span>📄 estimate_channel_smoothed()</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">def</span> <span class="function">estimate_channel_smoothed</span>(tx_grid, rx_grid, window_size=<span class="number">5</span>):
+    epsilon = <span class="number">1e-10</span>
+    H = rx_grid / (tx_grid + epsilon)
+    H_avg = np.mean(H, axis=<span class="number">1</span>)
+    
+    <span class="comment"># Smooth across subcarriers using moving average</span>
+    kernel = np.ones(window_size) / window_size
+    H_smooth = np.convolve(np.abs(H_avg), kernel, mode=<span class="string">'same'</span>)
+    phase_smooth = np.convolve(np.angle(H_avg), kernel, mode=<span class="string">'same'</span>)
+    
+    <span class="keyword">return</span> H_smooth, phase_smooth</pre>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); border-radius: 12px; padding: 20px; margin: 15px 0;">
+                    <h4 style="color: #10b981;">📝 Line-by-Line Explanation</h4>
+                    <table style="width: 100%; margin-top: 10px;">
+                        <tr>
+                            <td style="width: 40%; vertical-align: top; padding: 8px;"><code>window_size=5</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Number of adjacent subcarriers to
+                                average together. Larger = more smoothing but less detail</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>epsilon = 1e-10</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Prevent division by zero</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>H = rx_grid / (tx_grid + epsilon)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Calculate raw channel estimate (same
+                                as before)</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>H_avg = np.mean(H, axis=1)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Average across time (OFDM symbols)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>kernel = np.ones(window_size) / window_size</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Create averaging filter: [0.2, 0.2,
+                                0.2, 0.2, 0.2] for window_size=5</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>np.convolve(..., mode='same')</code>
+                            </td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Slide the averaging kernel across
+                                all subcarriers. 'same' keeps output same length as input</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>H_smooth, phase_smooth</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Separately smooth magnitude and
+                                phase (they need independent processing)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💡 How Convolution Works</h4>
+                    <p>The kernel slides across the signal, computing a weighted average at each position:<br><br>
+                        <code>H_smooth[i] = (H[i-2] + H[i-1] + H[i] + H[i+1] + H[i+2]) / 5</code><br><br>
+                        This replaces each value with the average of itself and its neighbors, smoothing out random
+                        noise while preserving overall trends.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Method 3: Least Squares + Interpolation -->
+            <div class="card" style="border-left: 4px solid #f59e0b;">
+                <h3>📍 Method 3: Least Squares (LS) + Interpolation</h3>
+                <p><strong>This is the standard method used in real 5G/LTE systems!</strong> Estimate the channel only
+                    at known pilot positions, then interpolate to fill in the data subcarriers.</p>
+
+                <div class="code-header">
+                    <span>📄 estimate_channel_ls_interp()</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">from</span> scipy.interpolate <span class="keyword">import</span> interp1d
+
+<span class="keyword">def</span> <span class="function">estimate_channel_ls_interp</span>(tx_grid, rx_grid, pilot_positions):
+    <span class="string">"""
+    LS estimation at pilot subcarriers, then interpolate to data subcarriers
+    """</span>
+    epsilon = <span class="number">1e-10</span>
+    
+    <span class="comment"># LS estimation only at pilot positions</span>
+    H_pilots = rx_grid[pilot_positions] / (tx_grid[pilot_positions] + epsilon)
+    H_pilots_avg = np.mean(H_pilots, axis=<span class="number">1</span>)
+    
+    <span class="comment"># Create interpolation function from pilot estimates</span>
+    all_positions = np.arange(tx_grid.shape[<span class="number">0</span>])
+    interp_func = interp1d(pilot_positions, H_pilots_avg, 
+                           kind=<span class="string">'linear'</span>, fill_value=<span class="string">'extrapolate'</span>)
+    
+    <span class="comment"># Interpolate to all subcarriers</span>
+    H_full = interp_func(all_positions)
+    
+    <span class="keyword">return</span> np.abs(H_full), np.angle(H_full)</pre>
+                </div>
+
+                <div style="background: rgba(245, 158, 11, 0.1); border-radius: 12px; padding: 20px; margin: 15px 0;">
+                    <h4 style="color: #f59e0b;">📝 Line-by-Line Explanation</h4>
+                    <table style="width: 100%; margin-top: 10px;">
+                        <tr>
+                            <td style="width: 40%; vertical-align: top; padding: 8px;"><code>pilot_positions</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Array of subcarrier indices where
+                                pilots are located (e.g., [0, 12, 24, ...] for every 12th subcarrier)</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>rx_grid[pilot_positions]</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Extract only the RX values at pilot
+                                positions (NumPy fancy indexing)</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>H_pilots = rx / tx</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Least Squares estimate: H = RX/TX
+                                (same formula, but only at pilots)</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>np.mean(H_pilots, axis=1)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Average pilot estimates across time
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>all_positions = np.arange(...)</code>
+                            </td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Create array [0, 1, 2, ..., 3299]
+                                for all subcarrier positions</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>interp1d(pilot_positions, H_pilots_avg, kind='linear')</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Create a linear interpolation
+                                function that maps positions → channel values</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>fill_value='extrapolate'</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">For positions outside pilot range,
+                                extrapolate rather than fail</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>interp_func(all_positions)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Apply the function to get channel
+                                estimate at every subcarrier</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💡 Why Use Pilots?</h4>
+                    <p><strong>Pilots (Reference Signals)</strong> are known values transmitted at known positions.
+                        Since we know exactly what was sent, the division gives a clean estimate without noise from
+                        unknown data symbols.<br><br>
+                        In 5G NR, pilots include: <strong>DMRS</strong> (Demodulation Reference Signal),
+                        <strong>CSI-RS</strong> (Channel State Information Reference Signal), <strong>PSS/SSS</strong>
+                        (Synchronization Signals).</p>
+                </div>
+            </div>
+
+            <!-- Method 4: MMSE -->
+            <div class="card" style="border-left: 4px solid #8b5cf6;">
+                <h3>🎯 Method 4: MMSE (Minimum Mean Square Error)</h3>
+                <p>The optimal linear estimator when you know the noise variance and channel statistics. It balances the
+                    noisy LS estimate with prior knowledge to minimize the average error.</p>
+
+                <div class="code-header">
+                    <span>📄 estimate_channel_mmse()</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">def</span> <span class="function">estimate_channel_mmse</span>(tx_grid, rx_grid, noise_var):
+    <span class="string">"""
+    MMSE estimation - optimal if you know noise variance
+    """</span>
+    epsilon = <span class="number">1e-10</span>
+    
+    <span class="comment"># Step 1: Least Squares estimate first</span>
+    H_ls = rx_grid / (tx_grid + epsilon)
+    
+    <span class="comment"># Step 2: Calculate SNR at each position</span>
+    signal_power = np.abs(tx_grid)**<span class="number">2</span>
+    snr = signal_power / noise_var
+    
+    <span class="comment"># Step 3: MMSE weighting factor</span>
+    mmse_weight = snr / (snr + <span class="number">1</span>)
+    
+    <span class="comment"># Step 4: Apply weight to LS estimate</span>
+    H_mmse = mmse_weight * H_ls
+    H_avg = np.mean(H_mmse, axis=<span class="number">1</span>)
+    
+    <span class="keyword">return</span> np.abs(H_avg), np.angle(H_avg)</pre>
+                </div>
+
+                <div style="background: rgba(139, 92, 246, 0.1); border-radius: 12px; padding: 20px; margin: 15px 0;">
+                    <h4 style="color: #a855f7;">📝 Line-by-Line Explanation</h4>
+                    <table style="width: 100%; margin-top: 10px;">
+                        <tr>
+                            <td style="width: 40%; vertical-align: top; padding: 8px;"><code>noise_var</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">The noise variance σ² (estimated
+                                from empty subcarriers or known from system)</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>H_ls = rx_grid / (tx_grid + epsilon)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Start with basic LS estimate (noisy
+                                for weak subcarriers)</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>signal_power = np.abs(tx_grid)**2</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Calculate |TX|² - the power of the
+                                transmitted signal at each position</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>snr = signal_power / noise_var</code>
+                            </td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Signal-to-Noise Ratio at each
+                                subcarrier. High SNR = reliable estimate</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>mmse_weight = snr / (snr + 1)</code>
+                            </td>
+                            <td style="color: var(--text-secondary); padding: 8px;"><strong>The key formula!</strong>
+                                Weight approaches 1 for high SNR, 0 for low SNR</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>H_mmse = mmse_weight * H_ls</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Scale LS estimate by the weight. Low
+                                SNR subcarriers are suppressed toward zero</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>🔬 The Mathematics Behind MMSE</h4>
+                    <p>The MMSE estimator minimizes E[|H - Ĥ|²]. For the scalar case:<br><br>
+                        <strong>Ĥ_MMSE = (SNR / (SNR + 1)) × Ĥ_LS</strong><br><br>
+                        • When SNR → ∞: weight → 1, keep full LS estimate (it's reliable)<br>
+                        • When SNR → 0: weight → 0, ignore LS estimate (it's garbage)<br><br>
+                        This is mathematically optimal for minimizing mean square error!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Method 5: Wiener/Gaussian Filter -->
+            <div class="card" style="border-left: 4px solid #ec4899;">
+                <h3>🌊 Method 5: Wiener/Gaussian Filter (Low-Pass Filtering)</h3>
+                <p>Apply a Gaussian smoothing filter to remove high-frequency noise while preserving the underlying
+                    channel shape.</p>
+
+                <div class="code-header">
+                    <span>📄 estimate_channel_wiener()</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">from</span> scipy.ndimage <span class="keyword">import</span> gaussian_filter1d
+
+<span class="keyword">def</span> <span class="function">estimate_channel_wiener</span>(tx_grid, rx_grid, sigma=<span class="number">3</span>):
+    <span class="string">"""
+    Gaussian smoothing to reduce high-frequency noise
+    """</span>
+    epsilon = <span class="number">1e-10</span>
+    H = rx_grid / (tx_grid + epsilon)
+    H_avg = np.mean(H, axis=<span class="number">1</span>)
+    
+    <span class="comment"># Apply Gaussian filter separately to magnitude and phase</span>
+    H_smooth_mag = gaussian_filter1d(np.abs(H_avg), sigma=sigma)
+    H_smooth_phase = gaussian_filter1d(np.angle(H_avg), sigma=sigma)
+    
+    <span class="keyword">return</span> H_smooth_mag, H_smooth_phase</pre>
+                </div>
+
+                <div style="background: rgba(236, 72, 153, 0.1); border-radius: 12px; padding: 20px; margin: 15px 0;">
+                    <h4 style="color: #ec4899;">📝 Line-by-Line Explanation</h4>
+                    <table style="width: 100%; margin-top: 10px;">
+                        <tr>
+                            <td style="width: 40%; vertical-align: top; padding: 8px;"><code>sigma=3</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Standard deviation of the Gaussian
+                                kernel. Larger σ = more smoothing</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>H = rx_grid / (tx_grid + epsilon)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Calculate raw channel estimate</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>H_avg = np.mean(H, axis=1)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Average across time dimension</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>gaussian_filter1d(..., sigma=sigma)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Apply 1D Gaussian blur across
+                                subcarriers. Uses a bell-curve shaped kernel</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>np.abs(H_avg), np.angle(H_avg)</code>
+                            </td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Process magnitude and phase
+                                separately (they have different characteristics)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💡 Gaussian vs Moving Average</h4>
+                    <p><strong>Moving Average:</strong> Equal weight to all neighbors (box filter)<br>
+                        <strong>Gaussian:</strong> Higher weight to closer neighbors, lower weight to farther
+                        ones<br><br>
+                        Gaussian is smoother and doesn't introduce ringing artifacts that moving average can cause.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Method 6: DFT-Based Denoising -->
+            <div class="card" style="border-left: 4px solid #06b6d4;">
+                <h3>🔄 Method 6: DFT-Based Denoising (Transform Domain)</h3>
+                <p>Transform the channel to the time domain, keep only significant components (multipath taps), and
+                    transform back. Based on the physical fact that wireless channels have limited delay spread.</p>
+
+                <div class="code-header">
+                    <span>📄 estimate_channel_dft_denoise()</span>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">def</span> <span class="function">estimate_channel_dft_denoise</span>(tx_grid, rx_grid, keep_taps=<span class="number">20</span>):
+    <span class="string">"""
+    Transform to time domain, keep only significant taps, transform back
+    """</span>
+    epsilon = <span class="number">1e-10</span>
+    H = rx_grid / (tx_grid + epsilon)
+    H_avg = np.mean(H, axis=<span class="number">1</span>)
+    
+    <span class="comment"># Transform to time domain (channel impulse response)</span>
+    h_time = np.fft.ifft(H_avg)
+    
+    <span class="comment"># Keep only first 'keep_taps' (physical multipath components)</span>
+    h_time_denoised = np.zeros_like(h_time)
+    h_time_denoised[:keep_taps] = h_time[:keep_taps]
+    
+    <span class="comment"># Transform back to frequency domain</span>
+    H_denoised = np.fft.fft(h_time_denoised)
+    
+    <span class="keyword">return</span> np.abs(H_denoised), np.angle(H_denoised)</pre>
+                </div>
+
+                <div style="background: rgba(6, 182, 212, 0.1); border-radius: 12px; padding: 20px; margin: 15px 0;">
+                    <h4 style="color: #06b6d4;">📝 Line-by-Line Explanation</h4>
+                    <table style="width: 100%; margin-top: 10px;">
+                        <tr>
+                            <td style="width: 40%; vertical-align: top; padding: 8px;"><code>keep_taps=20</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Number of time-domain samples to
+                                keep. Corresponds to maximum channel delay</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>H = rx_grid / (tx_grid + epsilon)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Calculate frequency-domain channel
+                                estimate</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>H_avg = np.mean(H, axis=1)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Average across time to get (3300,)
+                                channel vector</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;"><code>h_time = np.fft.ifft(H_avg)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;"><strong>IFFT!</strong> Convert
+                                frequency response H(f) to impulse response h(t)</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>h_time_denoised = np.zeros_like(h_time)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Create array of zeros with same
+                                shape</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>h_time_denoised[:keep_taps] = h_time[:keep_taps]</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;">Copy only the first keep_taps
+                                samples (real multipath), ignore the rest (noise)</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; padding: 8px;">
+                                <code>H_denoised = np.fft.fft(h_time_denoised)</code></td>
+                            <td style="color: var(--text-secondary); padding: 8px;"><strong>FFT!</strong> Convert back
+                                to frequency domain - now without the noise</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>🔬 The Physics Behind This</h4>
+                    <p><strong>Physical Reality:</strong> Radio waves arrive via multiple paths (direct, reflections).
+                        Each path = one "tap" in the time domain with a specific delay and amplitude.<br><br>
+                        <strong>In Indoor Environments:</strong> Typically 5-20 significant taps (paths)<br>
+                        <strong>Noise:</strong> Spreads across ALL time-domain samples uniformly<br><br>
+                        By keeping only the first few taps, we keep the real channel and discard most of the noise!
+                    </p>
+                </div>
+
+                <div
+                    style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 25px; margin: 20px 0;">
+                    <h4 style="color: var(--text-primary); margin-bottom: 15px;">📊 Visual: Time-Domain Denoising</h4>
+                    <pre
+                        style="color: var(--text-secondary); font-family: monospace; line-height: 1.6; overflow-x: auto;">
+<span style="color: #06b6d4;">Frequency Domain (H_avg):</span>
+   │  noisy measurement
+   ▼
+┌──────────────────────────────────────┐
+│ ∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿∿ │ ← Noisy channel response
+└──────────────────────────────────────┘
+                   │
+            <span style="color: #f87171;">IFFT</span>  ▼
+                   
+<span style="color: #06b6d4;">Time Domain (h_time):</span>
+┌──────────────────────────────────────┐
+│ ▌▌▌▌░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │
+│ └──┬─┘└─────────────┬──────────────┘ │
+│ <span style="color: #10b981;">multipath</span>          <span style="color: #f87171;">noise</span>              │
+└──────────────────────────────────────┘
+                   │
+           <span style="color: #fbbf24;">keep_taps</span> ▼
+                   
+<span style="color: #06b6d4;">Time Domain (denoised):</span>
+┌──────────────────────────────────────┐
+│ ▌▌▌▌                                 │ ← Keep only significant taps
+└──────────────────────────────────────┘
+                   │
+             <span style="color: #f87171;">FFT</span>  ▼
+                   
+<span style="color: #06b6d4;">Frequency Domain (H_denoised):</span>
+┌──────────────────────────────────────┐
+│ ∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼∼ │ ← Clean channel response!
+└──────────────────────────────────────┘
+                    </pre>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="card">
+                <h3>📊 Method Comparison Summary</h3>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Complexity</th>
+                                <th>Noise Reduction</th>
+                                <th>Requirements</th>
+                                <th>Best For</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Simple Division</strong></td>
+                                <td>⭐</td>
+                                <td>❌ None</td>
+                                <td>None</td>
+                                <td>Quick baseline, high SNR</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Masking (Original)</strong></td>
+                                <td>⭐</td>
+                                <td>⭐⭐</td>
+                                <td>None</td>
+                                <td>When pilots aren't explicit</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Moving Average</strong></td>
+                                <td>⭐</td>
+                                <td>⭐⭐</td>
+                                <td>Window size</td>
+                                <td>Simple smoothing</td>
+                            </tr>
+                            <tr>
+                                <td><strong>LS + Interpolation</strong></td>
+                                <td>⭐⭐</td>
+                                <td>⭐⭐⭐</td>
+                                <td>Pilot positions</td>
+                                <td>Standard 5G/LTE method</td>
+                            </tr>
+                            <tr>
+                                <td><strong>MMSE</strong></td>
+                                <td>⭐⭐⭐</td>
+                                <td>⭐⭐⭐⭐</td>
+                                <td>Noise variance</td>
+                                <td>Optimal linear estimation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Wiener/Gaussian</strong></td>
+                                <td>⭐⭐</td>
+                                <td>⭐⭐⭐</td>
+                                <td>Sigma parameter</td>
+                                <td>General smoothing</td>
+                            </tr>
+                            <tr>
+                                <td><strong>DFT Denoising</strong></td>
+                                <td>⭐⭐</td>
+                                <td>⭐⭐⭐⭐</td>
+                                <td>Max delay spread</td>
+                                <td>Multipath channels</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 20px;">
+                    <h4>🎯 Recommendation for Your Project</h4>
+                    <p>
+                        <strong>Current Implementation (Masking):</strong> Good for demo purposes ✓<br><br>
+                        <strong>Easy Upgrade:</strong> Add <strong>Moving Average</strong> or <strong>Gaussian
+                            Filter</strong> - minimal code change<br><br>
+                        <strong>Most Realistic:</strong> <strong>LS + Interpolation</strong> if you know pilot
+                        positions<br><br>
+                        <strong>Best Performance:</strong> <strong>DFT Denoising</strong> or <strong>MMSE</strong> for
+                        production systems
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Technologies -->
+        <section id="technologies">
+            <div class="section-header">
+                <div class="section-icon" style="background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);">🔧
+                </div>
+                <h2>Key Technologies Explained</h2>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Technology</th>
+                            <th>Purpose</th>
+                            <th>Why Used Here</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>IQ Samples</strong></td>
+                            <td>Complex signal representation</td>
+                            <td>Standard format for radio signals (I=real, Q=imaginary)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Protocol Buffers</strong></td>
+                            <td>Binary serialization</td>
+                            <td>Efficient, type-safe data exchange between processes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ZeroMQ</strong></td>
+                            <td>High-performance messaging</td>
+                            <td>Fast async IPC with PUSH/PULL pattern</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cross-Correlation</strong></td>
+                            <td>Time delay estimation</td>
+                            <td>Find optimal alignment between TX and RX</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OFDM</strong></td>
+                            <td>Multi-carrier modulation</td>
+                            <td>Core of 4G/5G; converts time → frequency domain</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Channel Estimation</strong></td>
+                            <td>Measure channel effects</td>
+                            <td>Essential for equalization and signal recovery</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Docker</strong></td>
+                            <td>Containerization</td>
+                            <td>Isolate server/client with shared IPC volume</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Docker Setup -->
+        <section id="docker">
+            <div class="section-header">
+                <div class="section-icon" style="background: linear-gradient(135deg, #0db7ed 0%, #384d54 100%);">🐳
+                </div>
+                <h2>Docker Configuration</h2>
+            </div>
+
+            <div class="card">
+                <h3>docker-compose.yml</h3>
+                <div class="code-block">
+                    <pre><span class="keyword">services</span>:
+  <span class="variable">server</span>:
+    <span class="keyword">build</span>:
+      context: .
+      dockerfile: server/Dockerfile
+    <span class="keyword">volumes</span>:
+      - /tmp:/tmp          <span class="comment"># Share IPC socket</span>
+
+  <span class="variable">client</span>:
+    <span class="keyword">build</span>:
+      context: .
+      dockerfile: client/Dockerfile
+    <span class="keyword">depends_on</span>:
+      - server             <span class="comment"># Wait for server</span>
+    <span class="keyword">volumes</span>:
+      - ./client/results:/client/results  <span class="comment"># Persist outputs</span>
+      - /tmp:/tmp          <span class="comment"># Access IPC socket</span></pre>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>🔑 Key Docker Concepts</h4>
+                    <p><strong>Volume Mounts:</strong> Both containers share <code>/tmp</code> for the ZMQ IPC socket.
+                        Results are mounted to host for persistence.<br><br>
+                        <strong>depends_on:</strong> Ensures client starts only after server is running.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Running the System -->
+        <section id="running">
+            <div class="section-header">
+                <div class="section-icon" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">▶️
+                </div>
+                <h2>Running the System</h2>
+            </div>
+
+            <div class="card">
+                <h3>Quick Start Commands</h3>
+                <div class="code-block">
+                    <pre><span class="comment"># Build and run both containers</span>
+docker-compose up --build
+
+<span class="comment"># View results after processing</span>
+ls client/results/
+<span class="comment"># task1.png  task2.png  task3.png  task4.png</span>
+
+<span class="comment"># Stop containers</span>
+docker-compose down</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Flow -->
+        <section id="summary">
+            <div class="section-header">
+                <div class="section-icon" style="background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%);">📋
+                </div>
+                <h2>Complete Flow Summary</h2>
+            </div>
+
+            <div class="data-flow">
+                <h3>End-to-End Data Pipeline</h3>
+                <div class="flow-boxes">
+                    <div class="flow-box" style="background: var(--gradient-1); color: white;">
+                        📁 .dat Files<br>
+                        <small>Raw IQ Bytes</small>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box" style="background: var(--gradient-2); color: white;">
+                        📦 Protobuf<br>
+                        <small>Serialization</small>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box" style="background: var(--gradient-3); color: white;">
+                        ⚡ ZMQ IPC<br>
+                        <small>Transport</small>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box" style="background: var(--gradient-4); color: white;">
+                        🔢 Complex<br>
+                        <small>I + jQ</small>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box"
+                        style="background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%); color: white;">
+                        📊 Processing<br>
+                        <small>4 Tasks</small>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box"
+                        style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333;">
+                        🖼️ Results<br>
+                        <small>PNG Plots</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>📡 Signal Processing Workflow Documentation</p>
+        <p style="font-size: 0.9rem; margin-top: 10px;">5G NR • ZeroMQ • Protocol Buffers • OFDM • Channel Estimation
+        </p>
+        <p style="font-size: 0.8rem; margin-top: 15px; color: var(--text-secondary);">Created for DFKI HiWi Interview
+            Task</p>
+    </footer>
+</body>
+
+</html>
