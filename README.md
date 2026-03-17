@@ -25,10 +25,14 @@ Plot the transmit and receive signals side-by-side in the time domain.
 Save the figure as:  
 `client/results/task1.png`
 
+![Task 1 Result](client/results/task1.png)
+
 ## Subtask 2
 Synchronize the received signal with the transmitted signal.  
 Plot the transmit signal and the synchronized receive signal as an overlay, and save it as:  
 `client/results/task2.png`
+
+![Task 2 Result](client/results/task2.png)
 
 ## Subtask 3
 Demodulate the synchronized receive signal.  
@@ -42,10 +46,14 @@ The demodulator outputs an OFDM grid.
 Plot the TX and RX grid side-by-side as images and save them as:  
 `client/results/task3.png`
 
+![Task 3 Result](client/results/task3.png)
+
 ## Subtask 4
 Perform a channel estimation in the frequency domain using the TX and RX grid.  
 Plot the channel amplitude and phase response side-by-side and save as:  
 `client/results/task4.png`
+
+![Task 4 Result](client/results/task4.png)
 
 ## **Project Structure**
 
